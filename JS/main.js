@@ -2,7 +2,7 @@
 const modal = document.querySelector(".modal");
 const registerUserModalBtn = document.querySelector(".registerUser-modal");
 
-// register  connect
+// ?register  connect
 const userNameInp = document.querySelector("#username");
 const emailInp = document.querySelector("#email");
 const ageInp = document.querySelector("#age");
@@ -10,7 +10,7 @@ const passwordInp = document.querySelector("#password");
 const passwordConfirmInp = document.querySelector("#passwordConfirm");
 const registerForm = document.querySelector("#registerUser-form");
 
-// modal logic
+// ?modal logic
 
 function showModal() {
   if (modal.style.display === "block") {
@@ -22,7 +22,7 @@ function showModal() {
 
 registerUserModalBtn.addEventListener("click", showModal);
 
-// register logic
+//? register logic
 const USERS_API = "http://localhost:8000/users";
 
 function registerUser(e) {
