@@ -1,16 +1,17 @@
-// show modal connect
-const modal = document.querySelector(".modal");
+//show modal connect
 const registerUserModalBtn = document.querySelector(".registerUser-modal");
+const modal = document.querySelector(".modal");
 
-// register  connect
+//register connect
 const userNameInp = document.querySelector("#username");
 const emailInp = document.querySelector("#email");
 const ageInp = document.querySelector("#age");
-const passwordInp = document.querySelector("#password");
+const passwordImp = document.querySelector("#password");
 const passwordConfirmInp = document.querySelector("#passwordConfirm");
 const registerForm = document.querySelector("#registerUser-form");
+const USERS_API = "http://localhost:8000/users";
 
-// modal logic
+//modal logic
 
 function showModal() {
   if (modal.style.display === "block") {
@@ -21,35 +22,55 @@ function showModal() {
 }
 
 registerUserModalBtn.addEventListener("click", showModal);
-
-// register logic
-const USERS_API = "http://localhost:8000/users";
-
+document;
+//register logic
+passwordImp.addEventListener("input", () => {
+  if (passwordImp.value.length < 6) {
+    passwordImp.style.border = "3px solid red";
+    passwordImp.style.borderRadius = "3px";
+  } else {
+    passwordImp.style.border = "3px solid green";
+    passwordImp.style.borderRadius = "3px";
+  }
+});
+passwordConfirmInp.addEventListener("input", () => {
+  if (
+    passwordConfirmInp.value.length < 6 ||
+    passwordImp.value !== passwordConfirmInp.value
+  ) {
+    passwordConfirmInp.style.border = "3px solid red";
+    passwordConfirmInp.style.borderRadius = "3px";
+  } else {
+    passwordConfirmInp.style.border = "3px solid green";
+    passwordConfirmInp.style.borderRadius = "3px";
+  }
+});
 function registerUser(e) {
   e.preventDefault();
   if (
     !userNameInp.value.trim() ||
     !emailInp.value.trim() ||
     !ageInp.value.trim() ||
-    !passwordInp.value.trim() ||
+    !passwordImp.value.trim() ||
     !passwordConfirmInp.value.trim()
   ) {
-    alert("Some inputs are empty");
+    alert("Заполните все поля");
     return;
   }
-
-  if (passwordInp.value !== passwordConfirmInp.value) {
-    alert("Passwords are not correct");
+  if (passwordImp.value !== passwordConfirmInp.value) {
+    alert("Неправильное подтверждение пароля");
     return;
   }
-
+  if (passwordImp.value.length < 6) {
+    alert("Пароль должен быть не менее 6 символов");
+    return;
+  }
   const userObj = {
     username: userNameInp.value,
     email: emailInp.value,
     age: ageInp.value,
-    password: passwordInp.value,
+    password: passwordImp.value,
   };
-
   fetch(USERS_API, {
     method: "POST",
     body: JSON.stringify(userObj),
@@ -57,14 +78,13 @@ function registerUser(e) {
       "Content-Type": "application/json;charset=utf-8",
     },
   });
-
   userNameInp.value = "";
   emailInp.value = "";
   ageInp.value = "";
-  passwordInp.value = "";
+  passwordImp.value = "";
   passwordConfirmInp.value = "";
 
-  alert("Registered successfully!");
+  alert("Успех!!!");
 
   modal.style.display = "none";
 }
