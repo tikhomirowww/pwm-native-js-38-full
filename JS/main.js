@@ -2,7 +2,9 @@
 const registerUserModalBtn = document.querySelector(".registerUser-modal");
 const modal = document.querySelector(".modal");
 
-//register connect
+
+// ?register  connect
+
 const userNameInp = document.querySelector("#username");
 const emailInp = document.querySelector("#email");
 const ageInp = document.querySelector("#age");
@@ -11,18 +13,27 @@ const passwordConfirmInp = document.querySelector("#passwordConfirm");
 const registerForm = document.querySelector("#registerUser-form");
 const USERS_API = "http://localhost:8000/users";
 
-//modal logic
+
+const registerCancel = document.querySelector(".modal button[type='reset']");
+
+// ?modal logic
 
 function showModal() {
-  if (modal.style.display === "block") {
-    modal.style.display = "none";
-  } else {
+  if (!modal.classList.contains("show")) {
     modal.style.display = "block";
+    setTimeout(function () {
+      modal.classList.add("show");
+    }, 10);
+  } else {
+    modal.classList.remove("show");
   }
+}
+function hideModal() {
+  modal.classList.remove("show");
 }
 
 registerUserModalBtn.addEventListener("click", showModal);
-document;
+
 //register logic
 passwordImp.addEventListener("input", () => {
   if (passwordImp.value.length < 6) {
@@ -45,6 +56,32 @@ passwordConfirmInp.addEventListener("input", () => {
     passwordConfirmInp.style.borderRadius = "3px";
   }
 });
+
+
+function isDescendant(parent, child) {
+  let node = child.parentNode;
+  while (node != null) {
+    if (node === parent) {
+      return true;
+    }
+    node = node.parentNode;
+  }
+  return false;
+}
+
+function clickOutsideModal(event) {
+  if (
+    !isDescendant(modal, event.target) &&
+    event.target !== registerUserModalBtn
+  ) {
+    modal.classList.remove("show");
+  }
+}
+
+document.addEventListener("click", clickOutsideModal);
+
+
+
 function registerUser(e) {
   e.preventDefault();
   if (
@@ -54,15 +91,23 @@ function registerUser(e) {
     !passwordImp.value.trim() ||
     !passwordConfirmInp.value.trim()
   ) {
-    alert("Заполните все поля");
+
+    showMessage("Some inputs are empty");
     return;
   }
-  if (passwordImp.value !== passwordConfirmInp.value) {
-    alert("Неправильное подтверждение пароля");
+
+  if (passwordInp.value !== passwordConfirmInp.value) {
+    showMessage("Passwords are not correct");
     return;
   }
-  if (passwordImp.value.length < 6) {
+
+if (passwordImp.value.length < 6) {
     alert("Пароль должен быть не менее 6 символов");
+    return;
+  }
+
+  if (/\d/.test(userNameInp.value)) {
+    showMessage("Username should not contain numbers");
     return;
   }
   const userObj = {
@@ -84,9 +129,25 @@ function registerUser(e) {
   passwordImp.value = "";
   passwordConfirmInp.value = "";
 
-  alert("Успех!!!");
+  showMessage("Успех!!!");
 
+  modal.style.opacity = "0";
   modal.style.display = "none";
 }
 
 registerForm.addEventListener("submit", registerUser);
+registerCancel.addEventListener("click", hideModal);
+
+// message box logic
+
+const messageBox = document.querySelector(".messageBox");
+
+function showMessage(message) {
+  messageBox.textContent = message;
+  messageBox.classList.add("show");
+  setTimeout(hideMessage, 2000);
+}
+
+function hideMessage() {
+  messageBox.classList.remove("show");
+}
