@@ -4,36 +4,8 @@
       "username": "admin@gmail.com",
       "email": "admin@gmail.com",
       "age": "12",
-      "password": "123",
-      "id": 1
-    },
-    {
-      "username": "admin@gmail.com",
-      "email": "admin@gmail.com",
-      "age": "12",
-      "password": "123",
-      "id": 2
-    },
-    {
-      "username": "user31",
-      "email": "tihomirovi92@gmail.com",
-      "age": "3245",
-      "password": "123",
-      "id": 3
-    },
-    {
-      "username": "admin2",
-      "email": "admin@mail.com",
-      "age": "32",
-      "password": "123",
-      "id": 4
-    },
-    {
-      "username": "admin3",
-      "email": "admin@mail.com",
-      "age": "43",
       "password": "123456",
-      "id": 5
+      "id": 1
     }
   ]
 }
