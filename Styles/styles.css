@@ -11,6 +11,7 @@
   opacity: 1;
 }
 
+
 .modal {
   display: none;
   border: 2px solid darkgray;
@@ -94,3 +95,60 @@
   display: block;
   opacity: 1;
 }
+
+nav {
+  height: 10vh;
+  background-color: rgb(56, 55, 55);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+h2 {
+  color: rgb(250, 246, 246);
+  font-size: 40px;
+  padding-left: 30px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  padding-right: 30px;
+}
+.buttons button {
+  border-radius: 10px;
+  width: 70px;
+  font-size: 20px;
+  width: 100px;
+  color: gray;
+}
+.search {
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid aqua;
+  font-size: 25px;
+}
+.search::placeholder {
+  color: aqua;
+  font-size: 30px;
+  text-align: center;
+}
+/* navbar finish */
+/* modal */
+/* .modal {
+  margin: 0 auto;
+  width: 40%;
+  height: 30%;
+  border: 1px solid black;
+  background-color: rgb(167, 173, 167);
+  border-radius: 10px;
+}
+#registerUser-form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+#registerUser-form button {
+  border-radius: 5px;
+  margin: 0 auto;
+  width: 50%;
+} */

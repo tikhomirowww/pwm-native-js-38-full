@@ -2,7 +2,7 @@
 const modal = document.querySelector(".modal");
 const registerUserModalBtn = document.querySelector(".registerUser-modal");
 
-// register  connect
+// ?register  connect
 const userNameInp = document.querySelector("#username");
 const emailInp = document.querySelector("#email");
 const ageInp = document.querySelector("#age");
@@ -11,7 +11,7 @@ const passwordConfirmInp = document.querySelector("#passwordConfirm");
 const registerForm = document.querySelector("#registerUser-form");
 const registerCancel = document.querySelector(".modal button[type='reset']");
 
-// modal logic
+// ?modal logic
 
 function showModal() {
   if (!modal.classList.contains("show")) {
@@ -28,6 +28,7 @@ function hideModal() {
 }
 
 registerUserModalBtn.addEventListener("click", showModal);
+
 
 function isDescendant(parent, child) {
   let node = child.parentNode;
@@ -52,6 +53,7 @@ function clickOutsideModal(event) {
 document.addEventListener("click", clickOutsideModal);
 
 // register logic
+
 const USERS_API = "http://localhost:8000/users";
 
 function registerUser(e) {
