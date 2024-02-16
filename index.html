@@ -17,33 +17,40 @@
         <input class="search" type="text" placeholder="search" />
       </div>
     </nav>
-    <div class="modal">
-      <h3>Register</h3>
-      <form id="registerUser-form">
-        <label>Username:<input id="username" type="text" /> </label>
-        <label>Email:<input id="email" type="email" /> </label>
-        <label>Age: <input id="age" type="number" /> </label>
-        <label>Password:<input id="password" type="password" /> </label>
-        <label
-          >Password confirmation:<input id="passwordConfirm" type="password" />
-        </label>
-        <div class="registerButtonWrapper">
-          <button>Register</button>
-          <button type="reset">Cancel</button>
-        </div>
-      </form>
+    <div class="modal-register">
+      <div class="modal">
+        <h3>Register</h3>
+        <form id="registerUser-form">
+          <label>Username:<input id="username" type="text" /> </label>
+          <label>Email:<input id="email" type="email" /> </label>
+          <label>Age: <input id="age" type="number" /> </label>
+          <label>Password:<input id="password" type="password" /> </label>
+          <label
+            >Password confirmation:<input
+              id="passwordConfirm"
+              type="password"
+            />
+          </label>
+          <div class="registerButtonWrapper">
+            <button>Register</button>
+            <button id="cancel" type="reset">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <div class="login-modal">
-      <h3>Sign in</h3>
-      <form id="loginUser-form">
-        <label>Username:<input id="username-login" type="text" /> </label>
-        <label>Password:<input id="password-login" type="password" /> </label>
-        <div class="registerButtonWrapper">
-          <button>Login</button>
-          <button type="reset">Cancel</button>
-        </div>
-      </form>
+    <div class="modal-login">
+      <div class="modal">
+        <h3>Sign in</h3>
+        <form id="loginUser-form">
+          <label>Username:<input id="username-login" type="text" /> </label>
+          <label>Password:<input id="password-login" type="password" /> </label>
+          <div class="registerButtonWrapper">
+            <button>Login</button>
+            <button id="cancel" type="reset">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="messageBox"></div>
   </body>

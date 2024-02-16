@@ -1,6 +1,6 @@
 //show modal connect
 const registerUserModalBtn = document.querySelector(".registerUser-modal");
-const modal = document.querySelector(".modal");
+const cancelBtn = document.querySelectorAll("#cancel");
 
 // ?register  connect
 
@@ -22,22 +22,42 @@ const logUserInp = document.querySelector("#username-login");
 const logPasswordInp = document.querySelector("#password-login");
 
 // ?modal logic
+let modal = null;
+cancelBtn.forEach((item) => {
+  console.log(item);
+  item.addEventListener("click", hideModal);
+});
 
-function showModal() {
-  if (!modal.classList.contains("show")) {
-    modal.style.display = "block";
+function showModal(modalName) {
+  let customModal = document.querySelector(`.modal-${modalName}`);
+  let innerModal = customModal.childNodes[1];
+  modal = innerModal;
+  let bg = document.createElement("div");
+  bg.classList.add("modal-bg");
+  document.body.prepend(bg);
+
+  bg.addEventListener("click", () => {
+    hideModal();
+    bg.classList.remove("modal-bg");
+  });
+
+  if (!innerModal.classList.contains("show")) {
+    innerModal.style.display = "block";
     setTimeout(function () {
-      modal.classList.add("show");
+      innerModal.classList.add("show");
     }, 10);
   } else {
-    modal.classList.remove("show");
+    innerModal.classList.remove("show");
   }
 }
+
 function hideModal() {
-  modal.classList.remove("show");
+  console.log("modal");
+  modal?.classList.remove("show");
+  modal?.parentNode.parentNode.childNodes[0].classList.remove("modal-bg");
 }
 
-registerUserModalBtn.addEventListener("click", showModal);
+registerUserModalBtn.addEventListener("click", () => showModal("register"));
 
 //register logic
 passwordInp.addEventListener("input", () => {
@@ -72,17 +92,6 @@ function isDescendant(parent, child) {
   }
   return false;
 }
-
-function clickOutsideModal(event) {
-  if (
-    !isDescendant(modal, event.target) &&
-    event.target !== registerUserModalBtn
-  ) {
-    modal.classList.remove("show");
-  }
-}
-
-document.addEventListener("click", clickOutsideModal);
 
 async function checkUniqueUserName(username) {
   let res = await fetch(USERS_API);
@@ -165,13 +174,7 @@ function hideMessage() {
 
 // ? login logic
 
-loginBtn.addEventListener("click", () => {
-  if (loginModal.style.display === "block") {
-    loginModal.style.display = "none";
-  } else {
-    loginModal.style.display = "block";
-  }
-});
+loginBtn.addEventListener("click", () => showModal("login"));
 
 async function checkUserPassword(username, password) {
   let res = await fetch(USERS_API);

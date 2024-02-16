@@ -6,6 +6,13 @@
       "age": "12",
       "password": "123456",
       "id": 1
+    },
+    {
+      "username": "adminnn@gmail.com",
+      "email": "tihomirovi92@gmail.com",
+      "age": "3245",
+      "password": "123456",
+      "id": 2
     }
   ]
 }
