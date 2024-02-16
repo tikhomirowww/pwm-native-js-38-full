@@ -5,14 +5,24 @@
       "email": "admin@gmail.com",
       "age": "12",
       "password": "123456",
+      "isAdmin": true,
       "id": 1
     },
     {
-      "username": "adminnn@gmail.com",
+      "username": "ilia",
       "email": "tihomirovi92@gmail.com",
       "age": "3245",
+      "isAdmin": false,
       "password": "123456",
       "id": 2
+    },
+    {
+      "username": "adminfgjh@gmail.com",
+      "email": "tihomirovi92@gmail.com",
+      "age": "3245",
+      "isAdmin": false,
+      "password": "123456",
+      "id": 3
     }
   ]
 }
