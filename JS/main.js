@@ -1,6 +1,7 @@
 //show modal connect
 const registerUserModalBtn = document.querySelector(".registerUser-modal");
 const cancelBtn = document.querySelectorAll("#cancel");
+const userNav = document.querySelector("#user-nav");
 
 // ?register  connect
 
@@ -20,6 +21,9 @@ const loginModal = document.querySelector(".login-modal");
 const loginForm = document.querySelector("#loginUser-form");
 const logUserInp = document.querySelector("#username-login");
 const logPasswordInp = document.querySelector("#password-login");
+
+//? logout connect
+const logoutBtn = document.querySelector(".logoutUser-btn");
 
 // ?modal logic
 let modal = null;
@@ -42,7 +46,8 @@ function showModal(modalName) {
   });
 
   if (!innerModal.classList.contains("show")) {
-    innerModal.style.display = "block";
+    // innerModal.style.display = "block";
+    innerModal.classList.add("block");
     setTimeout(function () {
       innerModal.classList.add("show");
     }, 10);
@@ -54,12 +59,13 @@ function showModal(modalName) {
 function hideModal() {
   console.log("modal");
   modal?.classList.remove("show");
+  modal?.classList.remove("block");
   modal?.parentNode.parentNode.childNodes[0].classList.remove("modal-bg");
 }
 
 registerUserModalBtn.addEventListener("click", () => showModal("register"));
 
-//register logic
+// ? register logic
 passwordInp.addEventListener("input", () => {
   if (passwordInp.value.length < 6) {
     passwordInp.style.border = "3px solid red";
@@ -136,6 +142,7 @@ async function registerUser(e) {
     username: userNameInp.value,
     email: emailInp.value,
     age: ageInp.value,
+    isAdmin: false,
     password: passwordInp.value,
   };
   fetch(USERS_API, {
@@ -152,13 +159,13 @@ async function registerUser(e) {
   passwordConfirmInp.value = "";
 
   showMessage("Успех!!!");
-  showModal();
+  hideModal();
 }
 
 registerForm.addEventListener("submit", registerUser);
 registerCancel.addEventListener("click", hideModal);
 
-// message box logic
+// ? message box logic
 
 const messageBox = document.querySelector(".messageBox");
 
@@ -188,7 +195,6 @@ function initStorage() {
     localStorage.setItem("user", "{}");
   }
 }
-initStorage();
 
 function setUserToStorage(username, isAdmin = false) {
   localStorage.setItem(
@@ -199,10 +205,6 @@ function setUserToStorage(username, isAdmin = false) {
 
 async function loginUser(e) {
   e.preventDefault();
-
-  let res = await fetch(USERS_API);
-  let users = await res.json();
-  const userObj = users.find((item) => item.username === username);
 
   if (!logUserInp.value.trim() || !logPasswordInp.value.trim()) {
     showMessage("Some inputs are empty");
@@ -220,13 +222,42 @@ async function loginUser(e) {
     return;
   }
 
-  setUserToStorage(logUserInp.value);
+  let res = await fetch(USERS_API);
+  let users = await res.json();
+  const userObj = users.find((item) => item.username === logUserInp.value);
+  initStorage();
+  setUserToStorage(userObj.username, userObj.isAdmin);
 
   logUserInp.value = "";
   logPasswordInp.value = "";
 
   showMessage("Success");
-  loginModal.style.display = "none";
+  checkStatus();
+  hideModal();
 }
 
 loginForm.addEventListener("submit", loginUser);
+
+// ? logout logic
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("user");
+  checkStatus();
+});
+
+// ? checkStatus
+function checkStatus() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
+  if (!user) {
+    logoutBtn.style.display = "none";
+    loginBtn.style.display = "block";
+    registerUserModalBtn.style.display = "block";
+    userNav.innerText = "";
+  } else {
+    logoutBtn.style.display = "block";
+    loginBtn.style.display = "none";
+    registerUserModalBtn.style.display = "none";
+    userNav.innerText = user.user;
+  }
+}
+checkStatus();
