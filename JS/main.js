@@ -31,6 +31,7 @@ const addModalProductBtn = document.querySelector("#add");
 const titleInp = document.querySelector("#title");
 const descInp = document.querySelector("#desc");
 const priceInp = document.querySelector("#price");
+const categoryInp = document.querySelector("#category");
 const imageInp = document.querySelector("#image");
 const addProductForm = document.querySelector("#addProduct-form");
 const productsList = document.querySelector("#products");
@@ -38,13 +39,23 @@ const productsList = document.querySelector("#products");
 const titleInpEdit = document.querySelector("#titleEdit");
 const descInpEdit = document.querySelector("#descEdit");
 const priceInpEdit = document.querySelector("#priceEdit");
+const categoryInpEdit = document.querySelector("#categoryEdit");
 const imageInpEdit = document.querySelector("#imageEdit");
 const editProductForm = document.querySelector("#editProduct-form");
+
+//? search connect
+const searchInp = document.querySelector(".search");
+
+//? filter connect
+const categorySel = document.querySelector("#categorySel");
+
+//?pagintaion connect
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
 
 // ?modal logic
 let modal = null;
 cancelBtn.forEach((item) => {
-  console.log(item);
   item.addEventListener("click", hideModal);
 });
 
@@ -260,6 +271,10 @@ logoutBtn.addEventListener("click", () => {
   checkStatus();
 });
 
+let currentPage = 1;
+let search = "";
+let category = "";
+
 // ? checkStatus
 function checkStatus() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -285,6 +300,7 @@ function checkStatus() {
 checkStatus();
 
 // ! crud logic
+
 // ? create
 addModalProductBtn.addEventListener("click", () => showModal("addProduct"));
 
@@ -293,6 +309,7 @@ async function createProduct(e) {
   if (
     !titleInp.value.trim() ||
     !priceInp.value.trim() ||
+    !categoryInp.value.trim() ||
     !descInp.value.trim() ||
     !imageInp.value.trim()
   ) {
@@ -303,6 +320,7 @@ async function createProduct(e) {
   const newProduct = {
     title: titleInp.value,
     price: priceInp.value,
+    category: categoryInp.value,
     description: descInp.value,
     image: imageInp.value,
   };
@@ -313,6 +331,7 @@ async function createProduct(e) {
       "Content-Type": "application/json;charset=utf-8",
     },
   });
+  addOptions();
   render();
   hideModal();
 }
@@ -322,7 +341,11 @@ addProductForm.addEventListener("submit", createProduct);
 //? read logic
 
 async function render() {
-  const res = await fetch(PRODUCTS_API);
+  let requestAPI = `${PRODUCTS_API}?q=${search}&category=${category}&_page=${currentPage}&_limit=3`;
+  if (!category) {
+    requestAPI = `${PRODUCTS_API}?q=${search}&_page=${currentPage}&_limit=3`;
+  }
+  const res = await fetch(requestAPI);
   const data = await res.json();
   initStorage();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -333,6 +356,7 @@ async function render() {
     <img width=400 src=${card.image} >
     <div><b>${card.title}</b></div>
     <div><b>Description:</b> ${card.description}</div>
+    <div><b>Category:</b> ${card.category}</div>
     <div><b>Price:</b> ${card.price}$</div>
     ${
       user.isAdmin
@@ -346,6 +370,7 @@ async function render() {
     </div>
     `;
   });
+  // addOptions();
 }
 render();
 
@@ -359,6 +384,7 @@ document.addEventListener("click", async (e) => {
     const data = await res.json();
     titleInpEdit.value = data.title;
     priceInpEdit.value = data.price;
+    categoryInpEdit.value = data.category;
     descInpEdit.value = data.description;
     imageInpEdit.value = data.image;
     id = productId;
@@ -371,6 +397,7 @@ editProductForm.addEventListener("submit", async (e) => {
   if (
     !titleInpEdit.value.trim() ||
     !priceInpEdit.value.trim() ||
+    !categoryInpEdit.value.trim() ||
     !descInpEdit.value.trim() ||
     !imageInpEdit.value.trim()
   ) {
@@ -380,6 +407,7 @@ editProductForm.addEventListener("submit", async (e) => {
   const editedObj = {
     title: titleInpEdit.value,
     price: priceInpEdit.value,
+    category: categoryInpEdit.value,
     description: descInpEdit.value,
     image: imageInpEdit.value,
   };
@@ -402,4 +430,46 @@ document.addEventListener("click", async (e) => {
     });
     render();
   }
+});
+
+//? search
+
+searchInp.addEventListener("input", () => {
+  search = searchInp.value;
+  render();
+});
+
+//? filtration
+async function addOptions() {
+  let res = await fetch(PRODUCTS_API);
+  let data = await res.json();
+  const categories = data.map((item) => item.category);
+  const uniqueCategories = [...new Set(categories)];
+  categorySel.innerHTML = `<option>All</option>`;
+  uniqueCategories.forEach((item) => {
+    categorySel.innerHTML += `
+  <option>${item}</option>
+  `;
+  });
+}
+addOptions();
+
+categorySel.addEventListener("change", (e) => {
+  if (e.target.value === "All") {
+    category = "";
+  } else {
+    category = e.target.value;
+  }
+  render();
+});
+
+//? pagintaion
+nextBtn.addEventListener("click", () => {
+  currentPage += 1;
+  render();
+});
+
+prevBtn.addEventListener("click", () => {
+  currentPage -= 1;
+  render();
 });

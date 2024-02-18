@@ -30,8 +30,41 @@
       "title": "qwer",
       "price": "777",
       "description": "Очень милый пёсель!",
+      "category": "cars",
       "image": "https://www.bmwgroup.com/content/dam/grpw/websites/bmwgroup_com/brands/bmw_i/2023/230201_BMW_Group_BMW_i4eDrive40.png",
       "id": 3
+    },
+    {
+      "title": "mazda",
+      "price": "567",
+      "description": "xdrcftvgybh",
+      "category": "cars",
+      "image": "https://s1.cdn.autoevolution.com/images/models/MAZDA_626--Mk-5--Sedan-1997_main.jpg",
+      "id": 4
+    },
+    {
+      "title": "dog",
+      "price": "777",
+      "category": "pet",
+      "description": "Очень милый пёсель!",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUxMjUWjKBHIuSMi2PBVhcFN7QW1ttapwBxxoO4xl5Yg&s",
+      "id": 5
+    },
+    {
+      "title": "cat",
+      "price": "123",
+      "category": "pet",
+      "description": "cute",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfpeRGvxa6TuuAkWxW7HFSJel4C0N1rwE8yyP8zeOgyw&s",
+      "id": 6
+    },
+    {
+      "title": "test",
+      "price": "123",
+      "category": "test",
+      "description": "horoshiy",
+      "image": "https://t4.ftcdn.net/jpg/05/62/99/31/360_F_562993122_e7pGkeY8yMfXJcRmclsoIjtOoVDDgIlh.jpg",
+      "id": 7
     }
   ]
 }
