@@ -11,7 +11,8 @@ const ageInp = document.querySelector("#age");
 const passwordInp = document.querySelector("#password");
 const passwordConfirmInp = document.querySelector("#passwordConfirm");
 const registerForm = document.querySelector("#registerUser-form");
-const USERS_API = "http://localhost:8000/users";
+const USERS_API = "http://localhost:8001/users";
+const PRODUCTS_API = "http://localhost:8001/products";
 
 const registerCancel = document.querySelector(".modal button[type='reset']");
 
@@ -24,6 +25,21 @@ const logPasswordInp = document.querySelector("#password-login");
 
 //? logout connect
 const logoutBtn = document.querySelector(".logoutUser-btn");
+
+//? crud connect
+const addModalProductBtn = document.querySelector("#add");
+const titleInp = document.querySelector("#title");
+const descInp = document.querySelector("#desc");
+const priceInp = document.querySelector("#price");
+const imageInp = document.querySelector("#image");
+const addProductForm = document.querySelector("#addProduct-form");
+const productsList = document.querySelector("#products");
+//? edit connect
+const titleInpEdit = document.querySelector("#titleEdit");
+const descInpEdit = document.querySelector("#descEdit");
+const priceInpEdit = document.querySelector("#priceEdit");
+const imageInpEdit = document.querySelector("#imageEdit");
+const editProductForm = document.querySelector("#editProduct-form");
 
 // ?modal logic
 let modal = null;
@@ -247,17 +263,143 @@ logoutBtn.addEventListener("click", () => {
 // ? checkStatus
 function checkStatus() {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
   if (!user) {
     logoutBtn.style.display = "none";
     loginBtn.style.display = "block";
     registerUserModalBtn.style.display = "block";
     userNav.innerText = "";
+    addModalProductBtn.style.display = "none";
   } else {
     logoutBtn.style.display = "block";
     loginBtn.style.display = "none";
     registerUserModalBtn.style.display = "none";
     userNav.innerText = user.user;
   }
+  if (user && user.isAdmin) {
+    addModalProductBtn.style.display = "block";
+  } else {
+    addModalProductBtn.style.display = "none";
+  }
+  render();
 }
 checkStatus();
+
+// ! crud logic
+// ? create
+addModalProductBtn.addEventListener("click", () => showModal("addProduct"));
+
+async function createProduct(e) {
+  e.preventDefault();
+  if (
+    !titleInp.value.trim() ||
+    !priceInp.value.trim() ||
+    !descInp.value.trim() ||
+    !imageInp.value.trim()
+  ) {
+    showMessage("Some inputs are empty");
+    return;
+  }
+
+  const newProduct = {
+    title: titleInp.value,
+    price: priceInp.value,
+    description: descInp.value,
+    image: imageInp.value,
+  };
+  await fetch(PRODUCTS_API, {
+    method: "POST",
+    body: JSON.stringify(newProduct),
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  render();
+  hideModal();
+}
+
+addProductForm.addEventListener("submit", createProduct);
+
+//? read logic
+
+async function render() {
+  const res = await fetch(PRODUCTS_API);
+  const data = await res.json();
+  initStorage();
+  const user = JSON.parse(localStorage.getItem("user"));
+  productsList.innerHTML = "";
+  data.forEach((card) => {
+    productsList.innerHTML += `
+    <div>
+    <img width=400 src=${card.image} >
+    <div><b>${card.title}</b></div>
+    <div><b>Description:</b> ${card.description}</div>
+    <div><b>Price:</b> ${card.price}$</div>
+    ${
+      user.isAdmin
+        ? `<div>
+    <button id=${card.id} class='deleteBtn'>Delete</button>
+     <button id=${card.id} class='editBtn'>Edit</button>
+    </div>`
+        : ""
+    }
+    
+    </div>
+    `;
+  });
+}
+render();
+
+//? edit logic
+let id = null;
+
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("editBtn")) {
+    const productId = e.target.id;
+    const res = await fetch(`${PRODUCTS_API}/${productId}`);
+    const data = await res.json();
+    titleInpEdit.value = data.title;
+    priceInpEdit.value = data.price;
+    descInpEdit.value = data.description;
+    imageInpEdit.value = data.image;
+    id = productId;
+    showModal("editProduct");
+  }
+});
+
+editProductForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (
+    !titleInpEdit.value.trim() ||
+    !priceInpEdit.value.trim() ||
+    !descInpEdit.value.trim() ||
+    !imageInpEdit.value.trim()
+  ) {
+    showMessage("Some inputs are empty");
+    return;
+  }
+  const editedObj = {
+    title: titleInpEdit.value,
+    price: priceInpEdit.value,
+    description: descInpEdit.value,
+    image: imageInpEdit.value,
+  };
+  await fetch(`${PRODUCTS_API}/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(editedObj),
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  render();
+  hideModal();
+});
+
+//? delete
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("deleteBtn")) {
+    await fetch(`${PRODUCTS_API}/${e.target.id}`, {
+      method: "DELETE",
+    });
+    render();
+  }
+});

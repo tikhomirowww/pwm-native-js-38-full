@@ -12,6 +12,7 @@
       <span id="user-nav"></span>
       <div class="buttons">
         <button class="registerUser-modal">Register</button>
+        <button id="add">Add</button>
         <button class="loginUser-modal">Login</button>
         <button class="logoutUser-btn">Logout</button>
         <input class="search" type="text" placeholder="search" />
@@ -52,7 +53,41 @@
         </form>
       </div>
     </div>
+
+    <div class="modal-addProduct">
+      <div class="modal">
+        <h3>Add product</h3>
+        <form id="addProduct-form">
+          <label>Title:<input id="title" type="text" /> </label>
+          <label>Description:<input id="desc" type="text" /> </label>
+          <label>Price: <input id="price" type="number" /> </label>
+          <label>Image:<input id="image" type="url" /> </label>
+          <div class="registerButtonWrapper">
+            <button>Add product</button>
+            <button id="cancel" type="reset">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-editProduct">
+      <div class="modal">
+        <h3>Edit product</h3>
+        <form id="editProduct-form">
+          <label>Title:<input id="titleEdit" type="text" /> </label>
+          <label>Description:<input id="descEdit" type="text" /> </label>
+          <label>Price: <input id="priceEdit" type="number" /> </label>
+          <label>Image:<input id="imageEdit" type="url" /> </label>
+          <div class="registerButtonWrapper">
+            <button>Save changes</button>
+            <button id="cancel" type="reset">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div class="messageBox"></div>
+    <div id="products"></div>
   </body>
   <script src="./JS/main.js"></script>
 </html>

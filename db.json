@@ -24,5 +24,14 @@
       "password": "123456",
       "id": 3
     }
+  ],
+  "products": [
+    {
+      "title": "qwer",
+      "price": "777",
+      "description": "Очень милый пёсель!",
+      "image": "https://www.bmwgroup.com/content/dam/grpw/websites/bmwgroup_com/brands/bmw_i/2023/230201_BMW_Group_BMW_i4eDrive40.png",
+      "id": 3
+    }
   ]
 }
